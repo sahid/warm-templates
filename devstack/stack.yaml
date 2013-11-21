@@ -1,0 +1,60 @@
+key:
+  - name: sf-cloudwatt
+
+network:
+- name: cluster
+  subnets:
+    - name: subnet-cluster
+      cidr: 192.168.42.0/24
+      ip_version: 4
+
+router:
+- name: link
+  gateways:
+    - network: internet
+  interfaces:
+    - subnet: subnet-cluster
+
+securitygroup:
+- name: global-secgroup
+  description: Security groups for the server.
+  rules:
+    - ip_protocol: tcp
+      from_port: 22
+      to_port: 22
+      cidr: 0.0.0.0/0
+    - ip_protocol: tcp
+      from_port: 80
+      to_port: 80
+      cidr: 0.0.0.0/0
+    - ip_protocol: tcp
+      from_port: 1
+      to_port: 65535
+      cidr: 192.168.42.0/24
+    - ip_protocol: udp
+      from_port: 1
+      to_port: 65535
+      cidr: 192.168.42.0/24
+
+
+server:
+- name: ctrl
+  min_count: 1
+  flavor: m2.medium
+  image: Ubuntu 12.04.3 x86_64
+  key: sf-cloudwatt
+  networks: 
+    - name: cluster
+      fixed_ip: 192.168.42.11
+  securitygroups: [default, global-secgroup]
+  userdata: [userdata/base.cmd, userdata/ctrl.cmd]
+
+- name: hypv
+  min_count: 2
+  flavor: m2.medium
+  image: Ubuntu 12.04.3 x86_64
+  key: sf-cloudwatt
+  networks: 
+    - name: cluster
+  securitygroups: [default, global-secgroup]
+  userdata: [userdata/base.cmd, userdata/hypv.cmd]

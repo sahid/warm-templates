@@ -1,0 +1,22 @@
+A warm template to deploy multi nodes devstack on openstack
+===========================================================
+
+This template is completly based on:
+    http://devstack.org/guides/multinode-lab.html
+
+You can have to update some configurations to work with your environement.
+
+
+internet
+  ---     cluster
+   |        ---
+   |---[X]---|
+   |         |
+   |         +---[srv:ctrl]
+  ---        |
+             +---[src:hypv01]
+             |
+             +---[srv:hypv02]
+             |
+             |
+            ---
