@@ -1,8 +1,11 @@
 # A warm template to deploy devstack in multi-node.
 #
-# You can have to update:
+# This template is based on the heat template in:
+#       https://github.com/openstack/heat-templates
+#
+# You may have to update this file:
 #     sections:
-#         - key: The key name
+#        - key: The key name
 #        - router: The gateway
 #        - server: The image name and flavor
 
@@ -10,9 +13,9 @@ key:
 - name: sf-cloudwatt
 
 network:
-- name: cluster
+- name: private
   subnets:
-    - name: subnet-cluster
+    - name: subnet-private
       cidr: 192.168.42.0/24
       ip_version: 4
 
@@ -21,20 +24,12 @@ router:
   gateways:
     - network: internet
   interfaces:
-    - subnet: subnet-cluster
+    - subnet: subnet-private
 
 securitygroup:
-- name: global-secgroup
-  description: Security groups for the server.
+- name: internal
+  description: Enable all traffic between controller & compute nodes.
   rules:
-    - ip_protocol: tcp
-      from_port: 22
-      to_port: 22
-      cidr: 0.0.0.0/0
-    - ip_protocol: tcp
-      from_port: 80
-      to_port: 80
-      cidr: 0.0.0.0/0
     - ip_protocol: tcp
       from_port: 1
       to_port: 65535
@@ -44,6 +39,22 @@ securitygroup:
       to_port: 65535
       cidr: 192.168.42.0/24
 
+- name: external-ssh
+  description: Enable SSH access.
+  rules:
+    - ip_protocol: tcp
+      from_port: 22
+      to_port: 22
+      cidr: 0.0.0.0/0
+
+- name: external-http
+  description: Enable HTTP-80 access.
+  rules:
+    - ip_protocol: tcp
+      from_port: 80
+      to_port: 80
+      cidr: 0.0.0.0/0
+
 server:
 - name: ctrl
   min_count: 1
@@ -51,9 +62,9 @@ server:
   image: Ubuntu 12.04.3 x86_64
   key: sf-cloudwatt
   networks: 
-    - name: cluster
+    - name: private
       fixed_ip: 192.168.42.11
-  securitygroups: [default, global-secgroup]
+  securitygroups: [default, internal, external-ssh, external-http]
   userdata: [userdata/base.cmd, userdata/ctrl.cmd]
 
 - name: hypv
@@ -62,6 +73,6 @@ server:
   image: Ubuntu 12.04.3 x86_64
   key: sf-cloudwatt
   networks: 
-    - name: cluster
-  securitygroups: [default, global-secgroup]
+    - name: private
+  securitygroups: [default, internal, external-ssh]
   userdata: [userdata/base.cmd, userdata/hypv.cmd]

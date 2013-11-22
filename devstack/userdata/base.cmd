@@ -2,7 +2,7 @@
 
 apt-get update
 apt-get upgrade -y
-apt-get install -y emacs23-nox git
+apt-get install -y git
 
 cd /home/ubuntu
 
