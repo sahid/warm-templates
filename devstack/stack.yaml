@@ -1,5 +1,13 @@
+# A warm template to deploy devstack in multi-node.
+#
+# You can have to update:
+#     sections:
+#         - key: The key name
+#        - router: The gateway
+#        - server: The image name and flavor
+
 key:
-  - name: sf-cloudwatt
+- name: sf-cloudwatt
 
 network:
 - name: cluster
@@ -36,9 +44,8 @@ securitygroup:
       to_port: 65535
       cidr: 192.168.42.0/24
 
-
 server:
-- name: compute
+- name: ctrl
   min_count: 1
   flavor: m2.medium
   image: Ubuntu 12.04.3 x86_64
