@@ -38,7 +38,7 @@ securitygroup:
 
 
 server:
-- name: ctrl
+- name: compute
   min_count: 1
   flavor: m2.medium
   image: Ubuntu 12.04.3 x86_64
@@ -50,7 +50,7 @@ server:
   userdata: [userdata/base.cmd, userdata/ctrl.cmd]
 
 - name: hypv
-  min_count: 2
+  min_count: 1
   flavor: m2.medium
   image: Ubuntu 12.04.3 x86_64
   key: sf-cloudwatt
