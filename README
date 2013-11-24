@@ -1,2 +1,7 @@
-Some templates aim to work with warm
-====================================
+Some templates aims to work with Warm
+=====================================
+
+Currently:
+~~~~~~~~~~
+ + OpenStack in multi-nodes using devstack
+ + Wordpress with seperate networks and dedicated database.
