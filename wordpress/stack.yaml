@@ -77,7 +77,7 @@ server:
   key: sf-cloudwatt
   networks: 
     - name: front
-      v4-fixed-ip: 10.123.0.1
+      v4-fixed-ip: 10.123.0.2
   securitygroups: [internal, external-ssh, external-http]
   userdata: [userdata/proxy.cloudinit, userdata/proxy.cmd]
 
@@ -87,7 +87,7 @@ server:
   key: sf-cloudwatt
   networks: 
     - name: back
-      v4-fixed-ip: 10.123.2.1
+      v4-fixed-ip: 10.123.2.2
   securitygroups: [internal, external-ssh]
   userdata: [userdata/mysql.cloudinit,]
   volumes:
@@ -100,6 +100,6 @@ server:
   key: sf-cloudwatt
   networks: 
     - name: middle
-      v4-fixed-ip: 10.123.1.1
+      v4-fixed-ip: 10.123.1.2
   securitygroups: [internal, external-ssh]
   userdata: [userdata/web.cloudinit, userdata/web.cmd]

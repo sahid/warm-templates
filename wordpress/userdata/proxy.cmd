@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IP_WEB=10.123.1.1
+IP_WEB=10.123.1.2
 
 cat << EOF >> /etc/nginx/sites-available/wordpress
 server {

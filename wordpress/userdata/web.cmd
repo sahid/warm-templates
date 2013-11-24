@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IP_SQL=10.123.1.1 # MySQL IP
+IP_SQL=10.123.2.2 # MySQL IP
 IP_WEB=`/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
 
 
