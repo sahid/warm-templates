@@ -1,0 +1,18 @@
+#cloud-config
+packages:
+ - mysql-server
+
+runcmd:
+ - [mysqladmin, -u, root, password, cloudwatt]
+ - [mysql, -pcloudwatt, -e, "create database wordpress_db"]
+ - [mysql, -pcloudwatt, -e, "grant all privileges on wordpress_db.* to 'wordpress_user' identified by 'cloudwatt'"]
+ - [sed, -i, 's/127.0.0.1/0.0.0.0/g', /etc/mysql/my.cnf]
+ - [stop, mysql]
+ - (echo n; echo p; echo 1; echo ; echo; echo w) | sudo fdisk /dev/vdb
+ - [mkfs.ext4, /dev/vdb1]
+ - [mount, /dev/vdb1, /mnt]
+ - [mv, /var/lib/mysql/, /mnt/mysql]
+ - chown -R mysql:mysql /mnt/mysql
+ - [sed, -i, 's/\/var\/lib\/mysql/\/mnt\/mysql/g', /etc/mysql/my.cnf]
+ - [sed, -i, 's/\/var\/lib\/mysql/\/mnt\/mysql/g', /etc/apparmor.d/usr.sbin.mysqld]
+ - [start, mysql]

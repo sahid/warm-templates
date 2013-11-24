@@ -1,0 +1,105 @@
+# A warm template to deploy wordpress.
+#
+# You can have to update:
+#     sections:
+#        - key: The key name
+#        - router: The gateway
+#        - server: The image name and flavor
+
+key:
+- name: sf-cloudwatt
+
+network:
+- name: front
+  subnets:
+    - name: front subnet
+      cidr: 10.123.0.0/24
+      ip_version: 4
+
+- name: middle
+  subnets:
+    - name: middle subnet
+      cidr: 10.123.1.0/24
+      ip_version: 4
+
+- name: back
+  subnets: 
+    - name: back subnet
+      cidr: 10.123.2.0/24
+      ip_version: 4
+
+router:
+- name: link
+  gateways:
+    - network: internet
+  interfaces:
+    - subnet: front subnet
+    - subnet: middle subnet
+    - subnet: back subnet
+
+securitygroup:
+- name: internal
+  description: Enable all traffic between controller & compute nodes.
+  rules:
+    - ip_protocol: tcp
+      from_port: 1
+      to_port: 65535
+      secgroup: internal
+    - ip_protocol: udp
+      from_port: 1
+      to_port: 65535
+      secgroup: internal
+
+- name: external-ssh
+  description: Enable SSH access.
+  rules:
+    - ip_protocol: tcp
+      from_port: 22
+      to_port: 22
+      cidr: 0.0.0.0/0
+
+- name: external-http
+  description: Enable HTTP-80 access.
+  rules:
+    - ip_protocol: tcp
+      from_port: 80
+      to_port: 80
+      cidr: 0.0.0.0/0
+
+volume:
+- name: db01
+  size: 1
+
+server:
+- name: proxy
+  flavor: m1.medium
+  image: Ubuntu 12.04.3 x86_64
+  key: sf-cloudwatt
+  networks: 
+    - name: front
+      v4-fixed-ip: 10.123.0.1
+  securitygroups: [internal, external-ssh, external-http]
+  userdata: [userdata/proxy.cloudinit, userdata/proxy.cmd]
+
+- name: mysql
+  flavor: m1.medium
+  image: Ubuntu 12.04.3 x86_64
+  key: sf-cloudwatt
+  networks: 
+    - name: back
+      v4-fixed-ip: 10.123.2.1
+  securitygroups: [internal, external-ssh]
+  userdata: [userdata/mysql.cloudinit,]
+  volumes:
+    - name: db01
+      device: /dev/vdb
+
+- name: web
+  flavor: m1.medium
+  image: Ubuntu 12.04.3 x86_64
+  key: sf-cloudwatt
+  networks: 
+    - name: middle
+      v4-fixed-ip: 10.123.1.1
+  securitygroups: [internal, external-ssh]
+  userdata: [userdata/web.cloudinit, userdata/web.cmd]
