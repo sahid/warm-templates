@@ -1,0 +1,4 @@
+server:
+- name: helloworld
+  flavor: m1.tiny
+  image: cirros-0.3.1-x86_64-uec
