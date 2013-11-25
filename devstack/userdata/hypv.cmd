@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# deps needs and not installed by devstack...
+apt-get install build-essential python-dev
+
 cd /home/ubuntu/devstack
 
 MY_IP=`/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
