@@ -20,7 +20,7 @@ SERVICE_TOKEN=$MY_TOKEN
 HOST_IP=$MY_IP
 LOGFILE=/opt/stack/logs/stack.sh.log
 
-ENABLED_SERVICES=n-cpu,rabbit,neutron,q-agt,q-dhcp
+ENABLED_SERVICES=n-cpu,rabbit,neutron,q-agt
 
 ENABLE_TENANT_TUNNELS=True
 
@@ -37,7 +37,7 @@ Q_HOST=$MY_CONTROLLER
 GLANCE_HOSTPORT=$MY_CONTROLLER:9292
 EOL
 
-sleep 250 # needs to wait the controller is running...
+sleep 350 # needs to wait the controller is running...
 
 cd /home/ubuntu/ && chown -R ubuntu:ubuntu devstack/
 cd /home/ubuntu/devstack && sudo -u ubuntu ./stack.sh
