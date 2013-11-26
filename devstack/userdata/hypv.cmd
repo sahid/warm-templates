@@ -24,8 +24,9 @@ ENABLED_SERVICES=n-cpu,rabbit,neutron,q-agt
 
 ENABLE_TENANT_TUNNELS=True
 
-#Q_DHCP_EXTRA_DHCP_OPTS=(dhcp_agents_per_network=)
 Q_AGENT_EXTRA_AGENT_OPTS=(tunnel_type=gre)
+
+Q_DHCP_EXTRA_DHCP_OPTS=(dhcp_agents_per_network=1)
 Q_AGENT_EXTRA_OVS_OPTS=(tenant_network_type=gre)
 Q_USE_NAMESPACE=True
 Q_USE_SECGROUP=True
