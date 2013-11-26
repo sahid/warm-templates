@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # deps needs and not installed by devstack...
-apt-get install build-essential python-dev
+apt-get install -y build-essential python-dev
 
 cd /home/ubuntu/devstack
 
