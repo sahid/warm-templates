@@ -6,6 +6,7 @@ MY_IP=`/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'
 MY_PASSWORD=password
 MY_TOKEN=token
 MY_LIBVIRT_TYPE=kvm
+MY_INTERFACE=eth0
 
 cat > localrc <<EOL
 ADMIN_PASSWORD=$MY_PASSWORD
@@ -15,16 +16,13 @@ SERVICE_PASSWORD=$MY_PASSWORD
 SERVICE_TOKEN=$MY_TOKEN
 
 HOST_IP=$MY_IP
+FLAT_INTERFACE=$MY_INTERFACE
 
 ENABLE_TENANT_TUNNELS=True
 
-Q_AGENT_EXTRA_AGENT_OPTS=(tunnel_type=gre)
-Q_AGENT_EXTRA_OVS_OPTS=(tenant_network_type=gre)
-Q_SRV_EXTRA_OPTS=(tenant_network_type=gre)
-Q_USE_NAMESPACE=True
-Q_USE_SECGROUP=True
-
 LIBVIRT_TYPE=$MY_LIBVIRT_TYPE
+
+VNCSERVER_LISTEN=0.0.0.0
 
 disable_service n-net
 disable_service n-cpu
