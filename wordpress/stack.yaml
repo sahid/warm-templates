@@ -15,18 +15,21 @@ network:
     - name: front subnet
       cidr: 10.123.0.0/24
       ip_version: 4
+      dns_nameservers: [8.8.8.8]
 
 - name: middle
   subnets:
     - name: middle subnet
       cidr: 10.123.1.0/24
       ip_version: 4
+      dns_nameservers: [8.8.8.8]
 
 - name: back
   subnets: 
     - name: back subnet
       cidr: 10.123.2.0/24
       ip_version: 4
+      dns_nameservers: [8.8.8.8]
 
 router:
 - name: link
